@@ -109,12 +109,30 @@ void angleDeviationCalculation(double TA_setpoint, double PA_setpoint) //affiche
 		PA_measure = EquationED_I5_mirrorPoloidalAngle(n1y, TA_measure);
 	}
 
+	//char nameOfTheFile[] = "resultAngleDeviation";
+	//char numberToWrite[100];
+
 	printf("XA ------- Setpoint -------  Measure ------- Deviation\n");
 	printf("TA: -----    %f    -----   %f    -----     %f\n", TA_setpoint, TA_measure, (TA_setpoint - TA_measure) *100 / TA_setpoint);
-	printf("PA: -----    %f    -----   %f    -----     %f\n\n", PA_setpoint, PA_setpoint, (PA_setpoint - PA_measure) *100 / PA_setpoint);
+	//writeOnTextFile(numberToWrite);
+	printf("PA: -----    %f    -----   %f    -----     %f\n\n", PA_setpoint, PA_measure, (PA_setpoint - PA_measure) *100 / PA_setpoint);
 
 	return 0;
 }
+
+/*
+void writeOnTextFile(char numberToWrite)
+{
+	FILE* fichier = NULL;
+
+		fichier = fopen("test.txt", "a");
+	if (fichier != NULL)
+	{
+		fputs(numberToWrite, fichier);
+		fclose(fichier);
+	}
+}
+*/
 
 double EquationEB_I1_N1y(double mirrorPoloidalAngle, double frameToroidalAngle) //I1 = [-13.5°;-10.35°[  
 {
