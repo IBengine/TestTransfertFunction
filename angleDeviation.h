@@ -24,4 +24,11 @@ double EquationED_I5_mirrorPoloidalAngle(double N1y, double frameToroidalAngle);
 
 double EquationED_frameToroidalAngle(double N1y);
 
+double chooseEquationEBByIntervalAndCompute(double TA, double PA);
+
 void angleDeviationCalculation(double TA_setpoint, double PA_setpoint);
+void displayN1X(double equation, double TA);
+void displayN1Y(double equation, double TA, double PA);
+
+double askDoubleTA(void);
+double askDoublePA(void);

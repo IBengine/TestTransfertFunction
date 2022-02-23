@@ -4,6 +4,7 @@
 
 int main()
 {
+	/*
 	int length = 3;
 
 	for (double j = -2; j < length; j++)
@@ -19,8 +20,45 @@ int main()
 			}
 		}
 	}
+	*/
 
+	double TA = askDoubleTA();
+	double PA = askDoublePA();
+	displayN1X(EquationEB_N1x(TA),TA);
+
+	displayN1Y(chooseEquationEBByIntervalAndCompute(TA,PA), TA, PA);
 	return 0;
+}
+
+
+double chooseEquationEBByIntervalAndCompute(double TA, double PA)
+{
+	double n1y;
+	if (TA >= -13.5 && TA < -10.35)
+	{
+		n1y = EquationEB_I1_N1y(PA, TA);
+	}
+
+	if (TA >= -10.35 && TA < -3.6)
+	{
+		n1y = EquationEB_I2_N1y(PA, TA);
+	}
+
+	if (TA >= -3.6 && TA < 3.6)
+	{
+		n1y = EquationEB_I3_N1y(PA, TA);
+	}
+
+	if (TA >= 3.6 && TA < 10.4)
+	{
+		n1y = EquationEB_I4_N1y(PA, TA);
+	}
+
+	if (TA >= 10.4 && TA <= 15)
+	{
+		n1y = EquationEB_I5_N1y(PA, TA);
+	}
+	return n1y;
 }
 
 void angleDeviationCalculation(double TA_setpoint, double PA_setpoint) //affiche l'ecart entre consignes et mesures
@@ -33,7 +71,7 @@ void angleDeviationCalculation(double TA_setpoint, double PA_setpoint) //affiche
 
 	n1x = 0;
 	n1y = 0;
-
+	/*
 	if (TA_setpoint >= -13.5 && TA_setpoint < -10.35)
 	{
 		Interval = 1;
@@ -68,7 +106,8 @@ void angleDeviationCalculation(double TA_setpoint, double PA_setpoint) //affiche
 
 		n1y = EquationEB_I5_N1y(PA_setpoint, TA_setpoint);
 	}
-
+	*/
+	n1y = chooseEquationEBByIntervalAndCompute(TA_setpoint, PA_setpoint);
 
 	n1x = EquationEB_N1x(TA_setpoint);
 	TA_measure = EquationED_frameToroidalAngle(n1x);
@@ -102,7 +141,7 @@ void angleDeviationCalculation(double TA_setpoint, double PA_setpoint) //affiche
 		PA_measure = EquationED_I4_mirrorPoloidalAngle(n1y, TA_measure);
 	}
 
-	if (TA_measure >= 10.4 && TA_measure < 15)
+	if (TA_measure >= 10.4 && TA_measure <= 15)
 	{
 		Interval = 5;
 
@@ -117,7 +156,32 @@ void angleDeviationCalculation(double TA_setpoint, double PA_setpoint) //affiche
 	//writeOnTextFile(numberToWrite);
 	printf("PA: -----    %f    -----   %f    -----     %f\n\n", PA_setpoint, PA_measure, (PA_setpoint - PA_measure) *100 / PA_setpoint);
 
-	return 0;
+}
+
+void displayN1X(double equation,double TA)
+{
+	printf("With TA = %f    -----   N1X = %f\n", TA, equation);
+}
+
+void displayN1Y(double equation, double TA, double PA)
+{
+	printf("With TA = %f and PA = %f -----   N1Y = %f\n", TA, PA, equation);
+}
+
+double askDoubleTA(void)
+{
+	double TA;
+	printf("Enter a Toroidal Angle to have is equivalent in turn for N1X or N1Y\n");
+	scanf_s("%lf", &TA);
+	return TA;
+}
+
+double askDoublePA(void)
+{
+	double PA;
+	printf("Enter a Poroidal Angle to have is equivalent in turn for N1Y\n");
+	scanf_s("%lf", &PA);
+	return PA;
 }
 
 /*
