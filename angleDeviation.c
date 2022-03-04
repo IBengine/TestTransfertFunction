@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "angleDeviation.h"
+#include <math.h>
+#include "betaAngleCalculation.h"
 
-int main()
+int mainAngleDeviation()
 {
 	/*
 	int length = 3;
@@ -24,39 +26,44 @@ int main()
 
 	double TA = askDoubleTA();
 	double PA = askDoublePA();
-	displayN1X(EquationEB_N1x(TA),TA);
-
+	displayN1X(EquationEB2_N1x(TA),TA);
 	displayN1Y(chooseEquationEBByIntervalAndCompute(TA,PA), TA, PA);
+
+	double Bo[3];
+
+
 	return 0;
 }
 
 
-double chooseEquationEBByIntervalAndCompute(double TA, double PA)
+
+
+double chooseEquationEBByIntervalAndCompute(double TA, double PA) //choose the equation to convert the mirror angles to motor turn according to the interval
 {
 	double n1y;
 	if (TA >= -13.5 && TA < -10.35)
 	{
-		n1y = EquationEB_I1_N1y(PA, TA);
+		n1y = EquationEB1_I1_N1y(PA, TA);
 	}
 
 	if (TA >= -10.35 && TA < -3.6)
 	{
-		n1y = EquationEB_I2_N1y(PA, TA);
+		n1y = EquationEB1_I2_N1y(PA, TA);
 	}
 
 	if (TA >= -3.6 && TA < 3.6)
 	{
-		n1y = EquationEB_I3_N1y(PA, TA);
+		n1y = EquationEB1_I3_N1y(PA, TA);
 	}
 
 	if (TA >= 3.6 && TA < 10.4)
 	{
-		n1y = EquationEB_I4_N1y(PA, TA);
+		n1y = EquationEB1_I4_N1y(PA, TA);
 	}
 
 	if (TA >= 10.4 && TA <= 15)
 	{
-		n1y = EquationEB_I5_N1y(PA, TA);
+		n1y = EquationEB1_I5_N1y(PA, TA);
 	}
 	return n1y;
 }
@@ -76,76 +83,76 @@ void angleDeviationCalculation(double TA_setpoint, double PA_setpoint) //affiche
 	{
 		Interval = 1;
 
-		n1y = EquationEB_I1_N1y(PA_setpoint, TA_setpoint);
+		n1y = EquationEB1_I1_N1y(PA_setpoint, TA_setpoint);
 	}
 
 	if (TA_setpoint >= -10.35 && TA_setpoint < -3.6)
 	{
 		Interval = 2;
 
-		n1y = EquationEB_I2_N1y(PA_setpoint, TA_setpoint);
+		n1y = EquationEB1_I2_N1y(PA_setpoint, TA_setpoint);
 	}
 
 	if (TA_setpoint >= -3.6 && TA_setpoint < 3.6)
 	{
 		Interval = 3;
 
-		n1y = EquationEB_I3_N1y(PA_setpoint, TA_setpoint);
+		n1y = EquationEB1_I3_N1y(PA_setpoint, TA_setpoint);
 	}
 
 	if (TA_setpoint >= 3.6 && TA_setpoint < 10.4)
 	{
 		Interval = 4;
 
-		n1y = EquationEB_I4_N1y(PA_setpoint, TA_setpoint);
+		n1y = EquationEB1_I4_N1y(PA_setpoint, TA_setpoint);
 	}
 
 	if (TA_setpoint >= 10.4 && TA_setpoint < 15)
 	{
 		Interval = 5;
 
-		n1y = EquationEB_I5_N1y(PA_setpoint, TA_setpoint);
+		n1y = EquationEB1_I5_N1y(PA_setpoint, TA_setpoint);
 	}
 	*/
 	n1y = chooseEquationEBByIntervalAndCompute(TA_setpoint, PA_setpoint);
 
-	n1x = EquationEB_N1x(TA_setpoint);
-	TA_measure = EquationED_frameToroidalAngle(n1x);
+	n1x = EquationEB2_N1x(TA_setpoint);
+	TA_measure = EquationED2_frameToroidalAngle(n1x);
 	PA_measure = 666;
 
 	if (TA_measure >= -13.5 && TA_measure < -10.35)
 	{
 		Interval = 1;
 
-		PA_measure = EquationED_I1_mirrorPoloidalAngle(n1y, TA_measure);
+		PA_measure = EquationED1_I1_mirrorPoloidalAngle(n1y, TA_measure);
 	}
 
 	if (TA_measure >= -10.35 && TA_measure < -3.6)
 	{
 		Interval = 2;
 
-		PA_measure = EquationED_I2_mirrorPoloidalAngle(n1y, TA_measure);
+		PA_measure = EquationED1_I2_mirrorPoloidalAngle(n1y, TA_measure);
 	}
 
 	if (TA_measure >= -3.6 && TA_measure < 3.6)
 	{
 		Interval = 3;
 
-		PA_measure = EquationED_I3_mirrorPoloidalAngle(n1y, TA_measure);
+		PA_measure = EquationED1_I3_mirrorPoloidalAngle(n1y, TA_measure);
 	}
 
 	if (TA_measure >= 3.6 && TA_measure < 10.4)
 	{
 		Interval = 4;
 
-		PA_measure = EquationED_I4_mirrorPoloidalAngle(n1y, TA_measure);
+		PA_measure = EquationED1_I4_mirrorPoloidalAngle(n1y, TA_measure);
 	}
 
 	if (TA_measure >= 10.4 && TA_measure <= 15)
 	{
 		Interval = 5;
 
-		PA_measure = EquationED_I5_mirrorPoloidalAngle(n1y, TA_measure);
+		PA_measure = EquationED1_I5_mirrorPoloidalAngle(n1y, TA_measure);
 	}
 
 	//char nameOfTheFile[] = "resultAngleDeviation";
@@ -198,63 +205,3 @@ void writeOnTextFile(char numberToWrite)
 }
 */
 
-double EquationEB_I1_N1y(double mirrorPoloidalAngle, double frameToroidalAngle) //I1 = [-13.5°;-10.35°[  
-{
-	return (1.0391 * mirrorPoloidalAngle) - (0.365 * frameToroidalAngle) - 0.3;
-}
-
-double EquationEB_I2_N1y(double mirrorPoloidalAngle, double frameToroidalAngle) //I2 = [-10.8°;-3.6°[  
-{
-	return (1.0372 * mirrorPoloidalAngle) - (0.365 * frameToroidalAngle) - 0.3;
-}
-
-double EquationEB_I3_N1y(double mirrorPoloidalAngle, double frameToroidalAngle) //I3 = [-3.6°;3.6°[  
-{
-	return (1.039 * mirrorPoloidalAngle) - (0.365 * frameToroidalAngle) - 0.3;
-}
-
-double EquationEB_I4_N1y(double mirrorPoloidalAngle, double frameToroidalAngle) //I4 = [3.6°;10.4°[  
-{
-	return (1.0261 * mirrorPoloidalAngle) - (0.365 * frameToroidalAngle) - 0.3;
-}
-
-double EquationEB_I5_N1y(double mirrorPoloidalAngle, double frameToroidalAngle) //I5 = [10.4°;15°] 
-{
-	return (1.0323 * mirrorPoloidalAngle) - (0.365 * frameToroidalAngle) - 0.3;
-}
-
-double EquationEB_N1x(double frameToroidalAngle)
-{
-	return -0.0319 * (frameToroidalAngle * frameToroidalAngle) + 3.1677 * frameToroidalAngle;
-}
-
-
-double EquationED_I1_mirrorPoloidalAngle(double N1y, double frameToroidalAngle) //I1 = [-13.5°;-10.35°[  
-{
-	return (N1y + 0.3 + (0.365 * frameToroidalAngle)) / (1.0391);
-}
-
-double EquationED_I2_mirrorPoloidalAngle(double N1y, double frameToroidalAngle) //I2 = [-10.8°;-3.6°[   
-{
-	return (N1y + 0.3 + (0.365 * frameToroidalAngle)) / (1.0372);
-}
-
-double EquationED_I3_mirrorPoloidalAngle(double N1y, double frameToroidalAngle) //I3 = [-3.6°;3.6°[    
-{
-	return (N1y + 0.3 + (0.365 * frameToroidalAngle)) / (1.039);
-}
-
-double EquationED_I4_mirrorPoloidalAngle(double N1y, double frameToroidalAngle) //I4 = [3.6°;10.4°[    
-{
-	return (N1y + 0.3 + (0.365 * frameToroidalAngle)) / (1.0261);
-}
-
-double EquationED_I5_mirrorPoloidalAngle(double N1y, double frameToroidalAngle) //I5 = [10.4°;15°]    
-{
-	return (N1y + 0.3 + (0.365 * frameToroidalAngle)) / (1.0323);
-}
-
-double EquationED_frameToroidalAngle(double N1x)
-{
-	return 0.00105 * (N1x * N1x) + 0.32505 * N1x;
-}
